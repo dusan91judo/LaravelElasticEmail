@@ -106,7 +106,7 @@ class ElasticTransport extends Transport
 
         $elasticEmailResponse = json_decode($result);
 
-        if (!$elasticEmailResponse->success) {
+        if (!$elasticEmailResponse->success && isset($elasticEmailResponse->data->transactionid) && isset($elasticEmailResponse->data->messageid)) {
             throw new \Exception('Email is not sended');
         }
 
