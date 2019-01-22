@@ -106,8 +106,12 @@ class ElasticTransport extends Transport
 
         $elasticEmailResponse = json_decode($result);
 
-        if (!$elasticEmailResponse->success || !isset($elasticEmailResponse->data->transactionid) || !isset($elasticEmailResponse->data->messageid)) {
-            throw new \Exception('Email is not sended');
+        if (!$elasticEmailResponse
+            || !$elasticEmailResponse->success
+            || !isset($elasticEmailResponse->data->transactionid)
+            || !isset($elasticEmailResponse->data->messageid))
+        {
+            throw new \Exception('Email is not sent');
         }
 
         return $result;
@@ -132,7 +136,7 @@ class ElasticTransport extends Transport
                     $tempName = uniqid() . '.' . $ext;
                     Storage::put($tempName, $attachedFile);
                     $type = $attachment->getContentType();
-                    $attachedFilePath = storage_path('app\\' . $tempName);
+                    $attachedFilePath = storage_path('app' . DIRECTORY_SEPARATOR . $tempName);
                     $data['file_' . $i] = new \CurlFile($attachedFilePath, $type, $fileName);
                     $i++;
                 }
