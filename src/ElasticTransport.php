@@ -111,7 +111,7 @@ class ElasticTransport extends Transport
             || !isset($elasticEmailResponse->data->transactionid)
             || !isset($elasticEmailResponse->data->messageid))
         {
-            throw new \Exception('Email is not sent');
+            throw new \Exception($result);
         }
 
         return $result;
