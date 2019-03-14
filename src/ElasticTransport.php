@@ -77,7 +77,8 @@ class ElasticTransport extends Transport
             'subject' => $message->getSubject(),
             'body_html' => $message->getBody(),
             'body_text' => $this->getText($message),
-
+            'replyTo' => $this->getReplyTo($message),
+            'replyToName' => $this->getReplyToName($message)
         ];
 
 
@@ -219,5 +220,15 @@ class ElasticTransport extends Transport
                 File::delete($file);
             }
         }
+    }
+
+    protected function getReplyTo(Swift_Mime_SimpleMessage $message)
+    {
+        return $message->getReplyTo() && isset(array_keys($message->getReplyTo())[0]) ? array_keys($message->getReplyTo())[0] : null;
+    }
+
+    protected function getReplyToName(Swift_Mime_SimpleMessage $message)
+    {
+        return $message->getReplyTo()[$this->getReplyTo($message)];
     }
 }
